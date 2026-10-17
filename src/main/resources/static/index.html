@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0b10">
+  <meta name="description" content="NewsWave — breaking news, technology, business, science and the stories shaping our world.">
+  <title>NewsWave — The World, Unfiltered</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/theme.js" defer></script>
+  <script src="/js/app.js" defer></script>
+</head>
+<body>
+<div class="ambient ambient-one"></div>
+<div class="ambient ambient-two"></div>
+
+<div class="topline">
+  <div class="container topline-inner">
+    <span class="live-indicator"><span class="live-dot"></span> LIVE NEWS DESK</span>
+    <span class="topline-message">Stay curious. Stay informed.</span>
+    <span id="todayLabel" class="topline-date"></span>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/" aria-label="NewsWave home">
+      <span class="brand-mark">NW<span></span></span>
+      <span class="brand-word">newswave<span class="brand-period">.</span><small>THE WORLD, IN FOCUS</small></span>
+    </a>
+
+    <button class="mobile-menu-toggle" id="mobileMenuToggle"
+            aria-label="Open navigation" aria-expanded="false"
+            aria-controls="mainNav">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="main-nav" id="mainNav" aria-label="News categories">
+      <button class="nav-link active" data-category="general">Latest</button>
+      <button class="nav-link" data-category="business">Business</button>
+      <button class="nav-link" data-category="technology">Technology</button>
+      <button class="nav-link" data-category="science">Science</button>
+      <button class="nav-link" data-category="health">Health</button>
+      <button class="nav-link" data-category="sports">Sports</button>
+      <button class="nav-link" data-category="entertainment">Culture</button>
+    </nav>
+
+    <div class="header-actions">
+      <form class="search-form" id="searchForm" role="search">
+        <span class="search-symbol" aria-hidden="true">⌕</span>
+        <input id="searchInput" type="search" placeholder="Search stories"
+               aria-label="Search news">
+        <button type="submit" aria-label="Submit search">↵</button>
+      </form>
+      <button class="theme-toggle" id="themeToggle"
+              aria-label="Switch to light theme" title="Toggle theme">
+        <span id="themeIcon" aria-hidden="true">☀</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="container page-wrap">
+  <section class="hero-intro">
+    <div class="hero-intro-copy">
+      <div class="eyebrow"><span class="eyebrow-line"></span> THE DAILY SIGNAL</div>
+      <h1>Look closer.<br>Know <span>more.</span></h1>
+      <p>The stories that matter, the context behind them, and a clearer view of what's happening next.</p>
+    </div>
+    <div class="edition-widget">
+      <div class="edition-widget-top">
+        <span class="edition-icon">◷</span>
+        <span>YOUR DAILY BRIEFING</span>
+      </div>
+      <strong id="editionDate">Today's edition</strong>
+      <span class="edition-subtitle">One world. Many perspectives.</span>
+      <div class="edition-rule"><span></span></div>
+      <div class="edition-bottom">
+        <span><i class="live-dot"></i> Updated headlines</span>
+        <button id="refreshBtn" title="Refresh news" aria-label="Refresh news">↻</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="breaking-strip" aria-label="Latest news update">
+    <div class="breaking-label"><span class="live-dot"></span> THE PULSE</div>
+    <p id="tickerText" aria-live="polite">Connecting to the news desk…</p>
+    <span class="breaking-arrow" aria-hidden="true">↗</span>
+  </section>
+
+  <div class="content-heading">
+    <div>
+      <div class="eyebrow"><span class="eyebrow-line"></span> EDITOR'S FEED</div>
+      <h2 id="sectionTitle">The latest <span class="muted-heading">/ Top stories</span></h2>
+    </div>
+    <div class="feed-meta">
+      <span class="feed-live-dot"></span>
+      <span id="resultsLabel">Loading stories</span>
+    </div>
+  </div>
+
+  <div id="statusMessage" class="status-message" role="status">
+    <span class="status-spinner"></span>
+    Gathering the latest headlines…
+  </div>
+
+  <section class="editorial-layout" aria-label="News feed">
+    <div class="main-feed">
+      <section id="featuredStory" class="featured-story" aria-label="Featured story"></section>
+      <section id="newsGrid" class="news-grid" aria-label="More news stories" aria-live="polite"></section>
+      <div class="load-more-wrap">
+        <button class="load-more" id="loadMoreBtn">
+          Load more stories <span aria-hidden="true">↓</span>
+        </button>
+      </div>
+    </div>
+
+    <aside class="sidebar">
+      <section class="sidebar-panel trending-panel">
+        <div class="panel-heading">
+          <div>
+            <span class="panel-kicker">WHAT'S HAPPENING</span>
+            <h3>Trending now <span class="trending-mark">↗</span></h3>
+          </div>
+          <span class="panel-index">01</span>
+        </div>
+        <div id="trendingList" class="trending-list">
+          <p class="panel-placeholder">Loading trending stories…</p>
+        </div>
+      </section>
+
+      <section class="sidebar-panel popular-panel">
+        <div class="panel-heading">
+          <div>
+            <span class="panel-kicker">YOUR READING LIST</span>
+            <h3>Most read</h3>
+          </div>
+          <span class="panel-index">02</span>
+        </div>
+        <p class="panel-description">Stories you open most on this device.</p>
+        <div id="mostReadList" class="most-read-list">
+          <p class="panel-placeholder">Your reading activity will appear here.</p>
+        </div>
+      </section>
+
+      <section class="sidebar-note">
+        <span class="sidebar-note-icon">✳</span>
+        <span class="panel-kicker">A NOTE ON THE NEWS</span>
+        <h3>Read beyond the headline.</h3>
+        <p>Follow each story to its original publisher for the full report and additional context.</p>
+      </section>
+    </aside>
+  </section>
+
+  <section class="closing-banner">
+    <div class="closing-orbit orbit-one"></div>
+    <div class="closing-orbit orbit-two"></div>
+    <div class="closing-content">
+      <span class="panel-kicker">STAY INFORMED</span>
+      <h2>A clearer view<br>starts <span>here.</span></h2>
+      <p>Explore the stories shaping technology, culture, business and the world around you.</p>
+      <a href="#newsGrid" class="closing-link">Explore the feed <span>↗</span></a>
+    </div>
+    <div class="closing-graphic" aria-hidden="true">
+      <div class="graphic-ring ring-one"></div>
+      <div class="graphic-ring ring-two"></div>
+      <div class="graphic-core">NW<span>.</span></div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <a class="brand footer-brand" href="/">
+      <span class="brand-mark">NW<span></span></span>
+      <span class="brand-word">newswave<span class="brand-period">.</span><small>THE WORLD, IN FOCUS</small></span>
+    </a>
+    <p>Headlines and summaries are attributed to their original publishers.</p>
+    <span class="footer-copy">© <span id="year"></span> NewsWave</span>
+  </div>
+</footer>
+</body>
+</html>
