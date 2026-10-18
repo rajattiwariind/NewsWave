@@ -1,189 +1,1173 @@
 
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0a0b10">
-  <meta name="description" content="NewsWave — breaking news, technology, business, science and the stories shaping our world.">
-  <title>NewsWave — The World, Unfiltered</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#090b12">
+    <meta name="description" content="NewsWave — Your world, without the noise. Discover breaking news, technology, business, science, and global stories.">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
+    <title>NewsWave — The World, In Focus</title>
 
-  <script src="/js/theme.js" defer></script>
-  <script src="/js/app.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+        /* Premium NewsWave index enhancements */
+        :root {
+            --nw-bg: #090b12;
+            --nw-surface: #111521;
+            --nw-surface-2: #171c2b;
+            --nw-border: rgba(255,255,255,.09);
+            --nw-text: #f4f5fb;
+            --nw-muted: #949bb0;
+            --nw-blue: #7c8cff;
+            --nw-cyan: #58d8ff;
+            --nw-purple: #b18cff;
+            --nw-radius: 20px;
+        }
+
+        * { box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 110px;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(ellipse at 8% 0%, rgba(88,112,255,.11), transparent 30%),
+                radial-gradient(ellipse at 95% 22%, rgba(163,91,255,.07), transparent 27%),
+                var(--nw-bg);
+            color: var(--nw-text);
+            font-family: "DM Sans", sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -1;
+            opacity: .12;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
+        }
+
+        a { color: inherit; }
+
+        button, input { font: inherit; }
+
+        button { -webkit-tap-highlight-color: transparent; }
+
+        ::selection {
+            color: #fff;
+            background: #686dff;
+        }
+
+        .container {
+            width: min(1320px, calc(100% - 48px));
+            margin-inline: auto;
+        }
+
+        .topline {
+            border-bottom: 1px solid var(--nw-border);
+            background: rgba(8,10,16,.8);
+            font-size: 11px;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .topline-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            min-height: 38px;
+        }
+
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            color: #d7d9e8;
+        }
+
+        .live-indicator::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #ff5b7f;
+            box-shadow: 0 0 12px rgba(255,91,127,.8);
+            animation: livePulse 1.8s infinite;
+        }
+
+        .topline-message { color: var(--nw-muted); }
+        .topline-date { color: #c1c7d9; }
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(9,11,18,.82);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+            border-bottom: 1px solid var(--nw-border);
+        }
+
+        .header-inner {
+            min-height: 86px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+            text-decoration: none;
+        }
+
+        .brand-mark {
+            width: 43px;
+            height: 43px;
+            display: grid;
+            place-items: center;
+            border-radius: 14px;
+            color: white;
+            font-family: Manrope, sans-serif;
+            font-size: 23px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667dff, #a276ff);
+            box-shadow: 0 7px 26px rgba(112,111,255,.25);
+            transform: rotate(-3deg);
+            transition: transform .3s, box-shadow .3s;
+        }
+
+        .brand:hover .brand-mark {
+            transform: rotate(5deg) scale(1.07);
+            box-shadow: 0 9px 32px rgba(112,111,255,.4);
+        }
+
+        .brand-copy { display: grid; gap: 1px; }
+
+        .brand-word {
+            font-family: Manrope, sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -1.2px;
+            line-height: 1.1;
+        }
+
+        .brand-period { color: var(--nw-blue); }
+
+        .brand small {
+            color: var(--nw-muted);
+            font-size: 9px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .main-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .nav-link {
+            border: 1px solid transparent;
+            border-radius: 9px;
+            padding: 10px 12px;
+            background: transparent;
+            color: #aab0c2;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color .2s, background .2s, border-color .2s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #fff;
+            border-color: rgba(124,140,255,.2);
+            background: rgba(124,140,255,.11);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-form {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 5px 7px 5px 12px;
+            width: 210px;
+            border: 1px solid var(--nw-border);
+            border-radius: 12px;
+            background: rgba(255,255,255,.035);
+            transition: width .25s, border-color .25s, background .25s;
+        }
+
+        .search-form:focus-within {
+            width: 245px;
+            border-color: rgba(124,140,255,.65);
+            background: rgba(124,140,255,.055);
+        }
+
+        .search-symbol {
+            color: #a9b2ce;
+            font-size: 19px;
+            line-height: 1;
+        }
+
+        .search-form input {
+            width: 100%;
+            min-width: 0;
+            border: 0;
+            outline: 0;
+            background: transparent;
+            color: var(--nw-text);
+            font-size: 12px;
+        }
+
+        .search-form input::placeholder { color: #81889d; }
+
+        .search-form button {
+            width: 29px;
+            height: 29px;
+            border: 0;
+            border-radius: 8px;
+            color: #fff;
+            background: #6d7dff;
+            cursor: pointer;
+            transition: background .2s, transform .2s;
+        }
+
+        .search-form button:hover {
+            background: #8a73ff;
+            transform: scale(1.05);
+        }
+
+        .theme-toggle,
+        .mobile-menu-toggle {
+            width: 40px;
+            height: 40px;
+            display: grid;
+            place-items: center;
+            border: 1px solid var(--nw-border);
+            border-radius: 12px;
+            background: rgba(255,255,255,.035);
+            color: #e6e8f4;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .theme-toggle:hover,
+        .mobile-menu-toggle:hover {
+            border-color: rgba(124,140,255,.55);
+            background: rgba(124,140,255,.13);
+        }
+
+        .mobile-menu-toggle { display: none; }
+
+        .page-wrap { padding-top: 38px; }
+
+        .hero-intro {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 32px;
+            padding: 28px 0 34px;
+        }
+
+        .hero-intro-copy { max-width: 760px; }
+
+        .eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 19px;
+            color: #aeb8ff;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2.4px;
+            text-transform: uppercase;
+        }
+
+        .eyebrow-line {
+            width: 27px;
+            height: 2px;
+            background: linear-gradient(90deg, #7185ff, #b38cff);
+        }
+
+        .hero-intro h1 {
+            margin: 0;
+            font-family: Manrope, sans-serif;
+            font-size: clamp(42px, 5.5vw, 76px);
+            font-weight: 800;
+            letter-spacing: -4.2px;
+            line-height: 1.05;
+        }
+
+        .hero-intro h1 span {
+            color: transparent;
+            background: linear-gradient(100deg, #a3b0ff 0%, #b99aff 47%, #6edfff 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        .hero-intro-copy > p {
+            max-width: 560px;
+            margin: 19px 0 0;
+            color: var(--nw-muted);
+            font-size: 14px;
+            line-height: 1.9;
+        }
+
+        .edition-widget {
+            width: 245px;
+            flex-shrink: 0;
+            padding: 19px;
+            border: 1px solid var(--nw-border);
+            border-radius: 17px;
+            background: linear-gradient(135deg, rgba(255,255,255,.055), rgba(255,255,255,.015));
+            box-shadow: 0 14px 50px rgba(0,0,0,.12);
+        }
+
+        .edition-widget > span {
+            display: block;
+            margin-bottom: 9px;
+            color: var(--nw-muted);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+        }
+
+        .edition-widget strong {
+            display: block;
+            font-family: Manrope, sans-serif;
+            font-size: 17px;
+            letter-spacing: -.5px;
+        }
+
+        .edition-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-top: 17px;
+            padding-top: 13px;
+            border-top: 1px solid var(--nw-border);
+            color: var(--nw-muted);
+            font-size: 10px;
+        }
+
+        #refreshBtn {
+            border: 1px solid rgba(124,140,255,.3);
+            border-radius: 8px;
+            padding: 7px 10px;
+            color: #c6cbff;
+            background: rgba(124,140,255,.1);
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        #refreshBtn:hover {
+            color: white;
+            background: rgba(124,140,255,.24);
+            transform: translateY(-1px);
+        }
+
+        .breaking-strip {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            overflow: hidden;
+            margin: 5px 0 42px;
+            padding: 14px 17px;
+            border: 1px solid rgba(255,104,143,.18);
+            border-radius: 13px;
+            background: linear-gradient(90deg, rgba(255,85,129,.09), rgba(255,255,255,.015));
+        }
+
+        .breaking-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+            color: #ff91ad;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .breaking-label::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #ff668f;
+            box-shadow: 0 0 10px #ff668f;
+        }
+
+        #tickerText {
+            overflow: hidden;
+            color: #c7cbda;
+            font-size: 12px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .content-heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 23px;
+        }
+
+        .panel-kicker {
+            display: block;
+            margin-bottom: 7px;
+            color: #9ba8ff;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .content-heading h2 {
+            margin: 0;
+            font-family: Manrope, sans-serif;
+            font-size: clamp(25px, 3vw, 35px);
+            font-weight: 800;
+            letter-spacing: -1.3px;
+        }
+
+        #resultsLabel {
+            color: var(--nw-muted);
+            font-size: 11px;
+        }
+
+        .status-message {
+            margin: 0 0 18px;
+            color: var(--nw-muted);
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .editorial-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 300px;
+            align-items: start;
+            gap: 28px;
+        }
+
+        .main-feed { min-width: 0; }
+
+        .featured-story {
+            position: relative;
+            min-height: 390px;
+            overflow: hidden;
+            isolation: isolate;
+            border: 1px solid var(--nw-border);
+            border-radius: 21px;
+            background:
+                radial-gradient(ellipse at 70% 20%, rgba(124,140,255,.2), transparent 50%),
+                linear-gradient(135deg, #171c2b, #0f111a);
+            box-shadow: 0 18px 60px rgba(0,0,0,.2);
+        }
+
+        .featured-story:empty::before {
+            content: "Preparing today's top story…";
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            color: var(--nw-muted);
+            font-size: 13px;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 19px;
+            margin-top: 20px;
+        }
+
+        .news-grid > * {
+            min-width: 0;
+            animation: storyAppear .45s both;
+        }
+
+        .news-grid > *:nth-child(2n) { animation-delay: .07s; }
+        .news-grid > *:nth-child(3n) { animation-delay: .12s; }
+
+        /* Style common article-card patterns without requiring a JS rewrite. */
+        .featured-story,
+        .news-grid > *,
+        .sidebar-panel {
+            transition: border-color .25s, box-shadow .25s, transform .25s;
+        }
+
+        .news-grid > * {
+            overflow: hidden;
+            border: 1px solid var(--nw-border);
+            border-radius: 17px;
+            background: linear-gradient(145deg, rgba(255,255,255,.045), rgba(255,255,255,.015));
+        }
+
+        .news-grid > *:hover,
+        .sidebar-panel:hover {
+            border-color: rgba(124,140,255,.32);
+            box-shadow: 0 16px 40px rgba(0,0,0,.2);
+            transform: translateY(-3px);
+        }
+
+        .news-grid img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            object-fit: cover;
+            transition: transform .55s cubic-bezier(.2,.7,.2,1);
+        }
+
+        .news-grid > *:hover img { transform: scale(1.035); }
+
+        .sidebar {
+            display: grid;
+            gap: 19px;
+        }
+
+        .sidebar-panel {
+            overflow: hidden;
+            padding: 21px;
+            border: 1px solid var(--nw-border);
+            border-radius: 18px;
+            background: linear-gradient(145deg, rgba(255,255,255,.045), rgba(255,255,255,.012));
+        }
+
+        .sidebar-panel h3 {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin: 0 0 18px;
+            font-family: Manrope, sans-serif;
+            font-size: 15px;
+            letter-spacing: -.3px;
+        }
+
+        .sidebar-panel h3::before {
+            content: "";
+            width: 4px;
+            height: 17px;
+            border-radius: 5px;
+            background: linear-gradient(#7b8cff, #b18cff);
+        }
+
+        .trending-list,
+        .most-read-list {
+            display: grid;
+            gap: 0;
+        }
+
+        .trending-list > *,
+        .most-read-list > * {
+            padding: 13px 0;
+            border-bottom: 1px solid var(--nw-border);
+        }
+
+        .trending-list > *:first-child,
+        .most-read-list > *:first-child { padding-top: 0; }
+
+        .trending-list > *:last-child,
+        .most-read-list > *:last-child {
+            padding-bottom: 0;
+            border-bottom: 0;
+        }
+
+        .trending-list a,
+        .most-read-list a {
+            color: #dfe2f0;
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1.65;
+            text-decoration: none;
+            transition: color .2s;
+        }
+
+        .trending-list a:hover,
+        .most-read-list a:hover { color: #a9b4ff; }
+
+        .sidebar-note {
+            padding: 18px;
+            border: 1px solid rgba(124,140,255,.18);
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(124,140,255,.1), rgba(177,140,255,.04));
+        }
+
+        .sidebar-note strong {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 13px;
+        }
+
+        .sidebar-note p {
+            margin: 0;
+            color: var(--nw-muted);
+            font-size: 11px;
+            line-height: 1.8;
+        }
+
+        .load-more-wrap {
+            display: flex;
+            justify-content: center;
+            padding: 32px 0 10px;
+        }
+
+        #loadMoreBtn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-width: 180px;
+            padding: 13px 20px;
+            border: 1px solid rgba(124,140,255,.35);
+            border-radius: 12px;
+            color: #dfe2ff;
+            background: linear-gradient(135deg, rgba(124,140,255,.15), rgba(177,140,255,.09));
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .25s;
+        }
+
+        #loadMoreBtn:hover {
+            border-color: #8e9aff;
+            background: linear-gradient(135deg, rgba(124,140,255,.27), rgba(177,140,255,.18));
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(124,140,255,.12);
+        }
+
+        .closing-banner {
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            margin: 70px 0 50px;
+            padding: 36px 40px;
+            border: 1px solid rgba(124,140,255,.2);
+            border-radius: 22px;
+            background:
+                radial-gradient(ellipse at 80% 0%, rgba(177,140,255,.16), transparent 45%),
+                linear-gradient(120deg, rgba(124,140,255,.09), rgba(255,255,255,.02));
+        }
+
+        .closing-banner::after {
+            content: "NW";
+            position: absolute;
+            right: 20%;
+            top: -58px;
+            color: rgba(255,255,255,.025);
+            font-family: Manrope, sans-serif;
+            font-size: 180px;
+            font-weight: 800;
+            pointer-events: none;
+        }
+
+        .closing-banner > div { position: relative; z-index: 1; }
+
+        .closing-banner .panel-kicker { margin-bottom: 11px; }
+
+        .closing-banner h2 {
+            margin: 0;
+            font-family: Manrope, sans-serif;
+            font-size: clamp(23px, 3vw, 36px);
+            letter-spacing: -1.3px;
+        }
+
+        .closing-banner p {
+            max-width: 570px;
+            margin: 10px 0 0;
+            color: var(--nw-muted);
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        .closing-mark {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            width: 58px;
+            height: 58px;
+            flex-shrink: 0;
+            place-items: center;
+            border: 1px solid rgba(160,167,255,.3);
+            border-radius: 18px;
+            color: white;
+            background: linear-gradient(135deg, #7185ff, #a17cff);
+            font-family: Manrope, sans-serif;
+            font-size: 25px;
+            font-weight: 800;
+            box-shadow: 0 12px 35px rgba(112,111,255,.2);
+        }
+
+        .site-footer {
+            border-top: 1px solid var(--nw-border);
+            background: rgba(0,0,0,.12);
+        }
+
+        .footer-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            min-height: 94px;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: Manrope, sans-serif;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .footer-brand .brand-mark {
+            width: 31px;
+            height: 31px;
+            border-radius: 9px;
+            font-size: 16px;
+        }
+
+        .footer-inner p {
+            margin: 0;
+            color: var(--nw-muted);
+            font-size: 10px;
+            line-height: 1.8;
+        }
+
+        .footer-meta {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--nw-muted);
+            font-size: 10px;
+        }
+
+        .footer-meta::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #7c8cff;
+        }
+
+        /* Theme switch compatibility */
+        html[data-theme="light"],
+        html.light-theme,
+        body.light-theme {
+            --nw-bg: #f4f5fb;
+            --nw-surface: #fff;
+            --nw-surface-2: #eceefa;
+            --nw-border: rgba(35,42,75,.12);
+            --nw-text: #191d2d;
+            --nw-muted: #697087;
+        }
+
+        html[data-theme="light"] body,
+        html.light-theme body,
+        body.light-theme {
+            background:
+                radial-gradient(ellipse at 8% 0%, rgba(88,112,255,.09), transparent 30%),
+                #f4f5fb;
+            color: var(--nw-text);
+        }
+
+        html[data-theme="light"] .site-header,
+        html.light-theme .site-header,
+        body.light-theme .site-header {
+            background: rgba(248,249,253,.86);
+        }
+
+        html[data-theme="light"] .topline,
+        html.light-theme .topline,
+        body.light-theme .topline { background: rgba(245,246,251,.88); }
+
+        html[data-theme="light"] .topline-message,
+        html[data-theme="light"] .topline-date,
+        html.light-theme .topline-message,
+        html.light-theme .topline-date,
+        body.light-theme .topline-message,
+        body.light-theme .topline-date { color: #697087; }
+
+        html[data-theme="light"] .nav-link,
+        html.light-theme .nav-link,
+        body.light-theme .nav-link { color: #525b73; }
+
+        html[data-theme="light"] .nav-link:hover,
+        html[data-theme="light"] .nav-link.active,
+        html.light-theme .nav-link:hover,
+        html.light-theme .nav-link.active,
+        body.light-theme .nav-link:hover,
+        body.light-theme .nav-link.active {
+            color: #343b76;
+            background: rgba(124,140,255,.12);
+        }
+
+        html[data-theme="light"] .search-form,
+        html[data-theme="light"] .theme-toggle,
+        html.light-theme .search-form,
+        html.light-theme .theme-toggle,
+        body.light-theme .search-form,
+        body.light-theme .theme-toggle { background: rgba(30,40,90,.035); }
+
+        html[data-theme="light"] .search-form input,
+        html.light-theme .search-form input,
+        body.light-theme .search-form input { color: #191d2d; }
+
+        html[data-theme="light"] .search-form input::placeholder,
+        html.light-theme .search-form input::placeholder,
+        body.light-theme .search-form input::placeholder { color: #798198; }
+
+        html[data-theme="light"] .featured-story,
+        html.light-theme .featured-story,
+        body.light-theme .featured-story {
+            background: linear-gradient(135deg, #e8eaff, #f8f8ff);
+        }
+
+        html[data-theme="light"] .news-grid > *,
+        html[data-theme="light"] .sidebar-panel,
+        html.light-theme .news-grid > *,
+        html.light-theme .sidebar-panel,
+        body.light-theme .news-grid > *,
+        body.light-theme .sidebar-panel {
+            background: rgba(255,255,255,.82);
+        }
+
+        html[data-theme="light"] .trending-list a,
+        html[data-theme="light"] .most-read-list a,
+        html.light-theme .trending-list a,
+        html.light-theme .most-read-list a,
+        body.light-theme .trending-list a,
+        body.light-theme .most-read-list a { color: #30364b; }
+
+        html[data-theme="light"] .closing-banner,
+        html.light-theme .closing-banner,
+        body.light-theme .closing-banner {
+            background: linear-gradient(120deg, rgba(124,140,255,.1), rgba(255,255,255,.85));
+        }
+
+        @keyframes livePulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255,91,127,.35); }
+            50% { box-shadow: 0 0 0 5px rgba(255,91,127,0); }
+        }
+
+        @keyframes storyAppear {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important;
+            }
+        }
+
+        @media (max-width: 1120px) {
+            .header-inner { gap: 18px; }
+            .main-nav { gap: 1px; }
+            .nav-link { padding: 9px 8px; font-size: 11px; }
+            .search-form { width: 175px; }
+            .search-form:focus-within { width: 195px; }
+            .editorial-layout { grid-template-columns: minmax(0, 1fr) 265px; gap: 20px; }
+        }
+
+        @media (max-width: 900px) {
+            .header-inner { min-height: 75px; flex-wrap: wrap; }
+            .mobile-menu-toggle {
+                display: grid;
+                order: 3;
+            }
+
+            .header-actions { margin-left: auto; }
+
+            .main-nav {
+                display: none;
+                order: 4;
+                width: 100%;
+                padding: 0 0 15px;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+            }
+
+            .main-nav.open,
+            .main-nav.active { display: flex; }
+
+            .editorial-layout { grid-template-columns: minmax(0, 1fr); }
+            .sidebar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .sidebar-note { grid-column: 1 / -1; }
+            .hero-intro { align-items: flex-start; }
+            .edition-widget { width: 215px; }
+        }
+
+        @media (max-width: 620px) {
+            .container { width: min(100% - 30px, 1320px); }
+            .topline-inner { min-height: 34px; gap: 10px; }
+            .topline-message { display: none; }
+            .topline-date { margin-left: auto; font-size: 9px; }
+
+            .header-inner { min-height: 69px; gap: 9px; }
+            .brand-mark { width: 37px; height: 37px; border-radius: 11px; font-size: 20px; }
+            .brand-word { font-size: 21px; }
+            .brand small { font-size: 8px; letter-spacing: 1.5px; }
+            .header-actions { gap: 6px; }
+            .search-form { width: 39px; height: 39px; padding: 4px; justify-content: center; }
+            .search-form:focus-within { width: min(190px, 43vw); }
+            .search-form input { width: 0; }
+            .search-form:focus-within input { width: 100%; }
+            .search-form button { width: 29px; height: 29px; flex-shrink: 0; }
+            .search-symbol { flex-shrink: 0; }
+            .theme-toggle, .mobile-menu-toggle { width: 37px; height: 37px; border-radius: 10px; }
+
+            .page-wrap { padding-top: 17px; }
+            .hero-intro { display: block; padding: 25px 0 26px; }
+            .eyebrow { margin-bottom: 15px; font-size: 9px; }
+            .hero-intro h1 { font-size: clamp(39px, 11vw, 57px); letter-spacing: -2.7px; }
+            .hero-intro-copy > p { margin-top: 14px; font-size: 12px; }
+            .edition-widget { display: none; }
+
+            .breaking-strip { margin: 4px 0 32px; padding: 12px; gap: 10px; }
+            .breaking-label { font-size: 9px; letter-spacing: .8px; }
+            #tickerText { font-size: 10px; }
+
+            .content-heading { align-items: flex-start; flex-direction: column; gap: 8px; margin-bottom: 17px; }
+            .content-heading h2 { font-size: 27px; }
+            .editorial-layout { gap: 24px; }
+            .featured-story { min-height: 300px; border-radius: 16px; }
+            .news-grid { grid-template-columns: minmax(0, 1fr); gap: 15px; margin-top: 15px; }
+            .news-grid img { aspect-ratio: 16 / 9; }
+            .sidebar { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+            .sidebar-note { grid-column: auto; }
+
+            .closing-banner { margin: 45px 0 32px; padding: 25px 22px; border-radius: 17px; gap: 14px; }
+            .closing-banner h2 { font-size: 25px; }
+            .closing-banner p { font-size: 11px; }
+            .closing-mark { width: 43px; height: 43px; border-radius: 13px; font-size: 20px; }
+            .footer-inner { align-items: flex-start; flex-direction: column; justify-content: center; gap: 10px; padding-block: 22px; }
+        }
+    </style>
 </head>
-<body>
-<div class="ambient ambient-one"></div>
-<div class="ambient ambient-two"></div>
 
+<body>
 <div class="topline">
-  <div class="container topline-inner">
-    <span class="live-indicator"><span class="live-dot"></span> LIVE NEWS DESK</span>
-    <span class="topline-message">Stay curious. Stay informed.</span>
-    <span id="todayLabel" class="topline-date"></span>
-  </div>
+    <div class="container topline-inner">
+        <span class="live-indicator">Independent news feed</span>
+        <span class="topline-message">Clarity over noise. Context over clicks.</span>
+        <span class="topline-date" id="todayLabel">THE DAILY EDITION</span>
+    </div>
 </div>
 
 <header class="site-header">
-  <div class="container header-inner">
-    <a class="brand" href="/" aria-label="NewsWave home">
-      <span class="brand-mark">NW<span></span></span>
-      <span class="brand-word">newswave<span class="brand-period">.</span><small>THE WORLD, IN FOCUS</small></span>
-    </a>
+    <div class="container header-inner">
+        <a class="brand" href="/" aria-label="NewsWave home">
+            <span class="brand-mark">N</span>
+            <span class="brand-copy">
+                    <span class="brand-word">NewsWave<span class="brand-period">.</span></span>
+                    <small>The world, in focus</small>
+                </span>
+        </a>
 
-    <button class="mobile-menu-toggle" id="mobileMenuToggle"
-            aria-label="Open navigation" aria-expanded="false"
-            aria-controls="mainNav">
-      <span></span><span></span><span></span>
-    </button>
+        <nav class="main-nav" id="mainNav" aria-label="News categories">
+            <button class="nav-link active" data-category="general" type="button">Top Stories</button>
+            <button class="nav-link" data-category="business" type="button">Business</button>
+            <button class="nav-link" data-category="technology" type="button">Technology</button>
+            <button class="nav-link" data-category="science" type="button">Science</button>
+            <button class="nav-link" data-category="health" type="button">Health</button>
+            <button class="nav-link" data-category="sports" type="button">Sports</button>
+            <button class="nav-link" data-category="entertainment" type="button">Culture</button>
+        </nav>
 
-    <nav class="main-nav" id="mainNav" aria-label="News categories">
-      <button class="nav-link active" data-category="general">Latest</button>
-      <button class="nav-link" data-category="business">Business</button>
-      <button class="nav-link" data-category="technology">Technology</button>
-      <button class="nav-link" data-category="science">Science</button>
-      <button class="nav-link" data-category="health">Health</button>
-      <button class="nav-link" data-category="sports">Sports</button>
-      <button class="nav-link" data-category="entertainment">Culture</button>
-    </nav>
+        <div class="header-actions">
+            <form class="search-form" id="searchForm" role="search">
+                <span class="search-symbol" aria-hidden="true">⌕</span>
+                <input id="searchInput" type="search" placeholder="Search stories..." aria-label="Search news">
+                <button type="submit" aria-label="Submit search">↗</button>
+            </form>
 
-    <div class="header-actions">
-      <form class="search-form" id="searchForm" role="search">
-        <span class="search-symbol" aria-hidden="true">⌕</span>
-        <input id="searchInput" type="search" placeholder="Search stories"
-               aria-label="Search news">
-        <button type="submit" aria-label="Submit search">↵</button>
-      </form>
-      <button class="theme-toggle" id="themeToggle"
-              aria-label="Switch to light theme" title="Toggle theme">
-        <span id="themeIcon" aria-hidden="true">☀</span>
-      </button>
+            <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle light and dark theme" title="Toggle theme">
+                <span id="themeIcon" aria-hidden="true">☼</span>
+            </button>
+
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
+                <span aria-hidden="true">☰</span>
+            </button>
+        </div>
     </div>
-  </div>
 </header>
 
 <main class="container page-wrap">
-  <section class="hero-intro">
-    <div class="hero-intro-copy">
-      <div class="eyebrow"><span class="eyebrow-line"></span> THE DAILY SIGNAL</div>
-      <h1>Look closer.<br>Know <span>more.</span></h1>
-      <p>The stories that matter, the context behind them, and a clearer view of what's happening next.</p>
-    </div>
-    <div class="edition-widget">
-      <div class="edition-widget-top">
-        <span class="edition-icon">◷</span>
-        <span>YOUR DAILY BRIEFING</span>
-      </div>
-      <strong id="editionDate">Today's edition</strong>
-      <span class="edition-subtitle">One world. Many perspectives.</span>
-      <div class="edition-rule"><span></span></div>
-      <div class="edition-bottom">
-        <span><i class="live-dot"></i> Updated headlines</span>
-        <button id="refreshBtn" title="Refresh news" aria-label="Refresh news">↻</button>
-      </div>
-    </div>
-  </section>
+    <section class="hero-intro">
+        <div class="hero-intro-copy">
+            <div class="eyebrow">
+                <span class="eyebrow-line"></span>
+                YOUR WORLD, WITHOUT THE NOISE
+            </div>
 
-  <section class="breaking-strip" aria-label="Latest news update">
-    <div class="breaking-label"><span class="live-dot"></span> THE PULSE</div>
-    <p id="tickerText" aria-live="polite">Connecting to the news desk…</p>
-    <span class="breaking-arrow" aria-hidden="true">↗</span>
-  </section>
+            <h1>The world moves fast.<br><span>Stay in the know.</span></h1>
 
-  <div class="content-heading">
-    <div>
-      <div class="eyebrow"><span class="eyebrow-line"></span> EDITOR'S FEED</div>
-      <h2 id="sectionTitle">The latest <span class="muted-heading">/ Top stories</span></h2>
-    </div>
-    <div class="feed-meta">
-      <span class="feed-live-dot"></span>
-      <span id="resultsLabel">Loading stories</span>
-    </div>
-  </div>
-
-  <div id="statusMessage" class="status-message" role="status">
-    <span class="status-spinner"></span>
-    Gathering the latest headlines…
-  </div>
-
-  <section class="editorial-layout" aria-label="News feed">
-    <div class="main-feed">
-      <section id="featuredStory" class="featured-story" aria-label="Featured story"></section>
-      <section id="newsGrid" class="news-grid" aria-label="More news stories" aria-live="polite"></section>
-      <div class="load-more-wrap">
-        <button class="load-more" id="loadMoreBtn">
-          Load more stories <span aria-hidden="true">↓</span>
-        </button>
-      </div>
-    </div>
-
-    <aside class="sidebar">
-      <section class="sidebar-panel trending-panel">
-        <div class="panel-heading">
-          <div>
-            <span class="panel-kicker">WHAT'S HAPPENING</span>
-            <h3>Trending now <span class="trending-mark">↗</span></h3>
-          </div>
-          <span class="panel-index">01</span>
+            <p>
+                The stories shaping our world, all in one place.
+                Discover the latest headlines, explore new perspectives,
+                and stay informed about what matters.
+            </p>
         </div>
-        <div id="trendingList" class="trending-list">
-          <p class="panel-placeholder">Loading trending stories…</p>
-        </div>
-      </section>
 
-      <section class="sidebar-panel popular-panel">
-        <div class="panel-heading">
-          <div>
-            <span class="panel-kicker">YOUR READING LIST</span>
-            <h3>Most read</h3>
-          </div>
-          <span class="panel-index">02</span>
-        </div>
-        <p class="panel-description">Stories you open most on this device.</p>
-        <div id="mostReadList" class="most-read-list">
-          <p class="panel-placeholder">Your reading activity will appear here.</p>
-        </div>
-      </section>
+        <aside class="edition-widget" aria-label="Today's edition">
+            <span>Today's edition</span>
+            <strong id="editionDate">The Daily Briefing</strong>
+            <div class="edition-bottom">
+                <span>Curated for the curious</span>
+                <button id="refreshBtn" type="button" title="Refresh news">↻ Refresh</button>
+            </div>
+        </aside>
+    </section>
 
-      <section class="sidebar-note">
-        <span class="sidebar-note-icon">✳</span>
-        <span class="panel-kicker">A NOTE ON THE NEWS</span>
-        <h3>Read beyond the headline.</h3>
-        <p>Follow each story to its original publisher for the full report and additional context.</p>
-      </section>
-    </aside>
-  </section>
+    <section class="breaking-strip" aria-label="Latest news">
+        <span class="breaking-label">The latest</span>
+        <span id="tickerText">Your daily briefing is getting ready…</span>
+    </section>
 
-  <section class="closing-banner">
-    <div class="closing-orbit orbit-one"></div>
-    <div class="closing-orbit orbit-two"></div>
-    <div class="closing-content">
-      <span class="panel-kicker">STAY INFORMED</span>
-      <h2>A clearer view<br>starts <span>here.</span></h2>
-      <p>Explore the stories shaping technology, culture, business and the world around you.</p>
-      <a href="#newsGrid" class="closing-link">Explore the feed <span>↗</span></a>
+    <section class="content-heading">
+        <div>
+            <span class="panel-kicker">THE NEWSROOM</span>
+            <h2 id="sectionTitle">Top Stories</h2>
+        </div>
+        <span id="resultsLabel">Latest headlines</span>
+    </section>
+
+    <p class="status-message" id="statusMessage" role="status" aria-live="polite">
+        Bringing you the latest headlines…
+    </p>
+
+    <div class="editorial-layout">
+        <section class="main-feed" aria-label="Latest news articles">
+            <article id="featuredStory" class="featured-story" aria-label="Featured story"></article>
+
+            <section id="newsGrid" class="news-grid" aria-label="More news articles" aria-live="polite"></section>
+
+            <div class="load-more-wrap">
+                <button id="loadMoreBtn" type="button">
+                    Explore more stories <span aria-hidden="true">→</span>
+                </button>
+            </div>
+        </section>
+
+        <aside class="sidebar" aria-label="News highlights">
+            <section class="sidebar-panel trending-panel">
+                <h3>Trending now <span aria-hidden="true">↗</span></h3>
+                <div class="trending-list" id="trendingList">
+                    <p class="status-message">Loading trending stories…</p>
+                </div>
+            </section>
+
+            <section class="sidebar-panel popular-panel">
+                <h3>Most read <span aria-hidden="true">◎</span></h3>
+                <div class="most-read-list" id="mostReadList">
+                    <p class="status-message">Your reading list will appear here.</p>
+                </div>
+            </section>
+
+            <section class="sidebar-note">
+                <strong>A little more perspective.</strong>
+                <p>Good journalism starts with curiosity. Explore different topics, follow the facts, and make up your own mind.</p>
+            </section>
+        </aside>
     </div>
-    <div class="closing-graphic" aria-hidden="true">
-      <div class="graphic-ring ring-one"></div>
-      <div class="graphic-ring ring-two"></div>
-      <div class="graphic-core">NW<span>.</span></div>
-    </div>
-  </section>
+
+    <section class="closing-banner">
+        <div>
+            <span class="panel-kicker">STAY CURIOUS</span>
+            <h2>A clearer view of the world.</h2>
+            <p>From big global developments to the ideas shaping tomorrow, keep exploring the stories that matter.</p>
+        </div>
+        <div class="closing-mark" aria-hidden="true">N</div>
+    </section>
 </main>
 
 <footer class="site-footer">
-  <div class="container footer-inner">
-    <a class="brand footer-brand" href="/">
-      <span class="brand-mark">NW<span></span></span>
-      <span class="brand-word">newswave<span class="brand-period">.</span><small>THE WORLD, IN FOCUS</small></span>
-    </a>
-    <p>Headlines and summaries are attributed to their original publishers.</p>
-    <span class="footer-copy">© <span id="year"></span> NewsWave</span>
-  </div>
+    <div class="container footer-inner">
+        <div class="footer-brand">
+            <span class="brand-mark">N</span>
+            <span>NewsWave<span class="brand-period">.</span></span>
+        </div>
+
+        <p>Independent thinking. Informed living.<br>© <span id="year">2026</span> NewsWave. All rights reserved.</p>
+
+        <span class="footer-meta">Made for the curious</span>
+    </div>
 </footer>
+
+<script src="/js/theme.js"></script>
+<script src="/js/app.js"></script>
+
+<script>
+    // Keep the date and year current without changing the news API.
+    (() => {
+        const now = new Date();
+
+        const dateText = new Intl.DateTimeFormat("en-IN", {
+            weekday: "short",
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        }).format(now);
+
+        const todayLabel = document.getElementById("todayLabel");
+        const editionDate = document.getElementById("editionDate");
+        const year = document.getElementById("year");
+
+        if (todayLabel) todayLabel.textContent = dateText.toUpperCase();
+        if (editionDate) editionDate.textContent = dateText;
+        if (year) year.textContent = now.getFullYear();
+
+        const menuButton = document.getElementById("mobileMenuToggle");
+        const mainNav = document.getElementById("mainNav");
+
+        if (menuButton && mainNav) {
+            menuButton.addEventListener("click", () => {
+                const isOpen = mainNav.classList.toggle("open");
+                menuButton.setAttribute("aria-expanded", String(isOpen));
+            });
+
+            mainNav.querySelectorAll(".nav-link").forEach((link) => {
+                link.addEventListener("click", () => {
+                    mainNav.classList.remove("open");
+                    menuButton.setAttribute("aria-expanded", "false");
+                });
+            });
+        }
+    })();
+</script>
 </body>
 </html>
