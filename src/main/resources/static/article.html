@@ -1,20 +1,445 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090b12">
+  <meta name="description" content="Read the latest news and in-depth stories on NewsWave.">
+
   <title>Story | NewsWave</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
+
+  <style>
+    :root {
+        --article-bg: #090b12;
+        --article-panel: #111521;
+        --article-border: rgba(255,255,255,.09);
+        --article-text: #f4f5fb;
+        --article-muted: #969db1;
+        --article-blue: #8290ff;
+        --article-purple: #b18cff;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+        margin: 0;
+        color: var(--article-text);
+        background:
+            radial-gradient(ellipse at 15% 0%, rgba(92,111,255,.11), transparent 32%),
+            radial-gradient(ellipse at 95% 35%, rgba(177,140,255,.07), transparent 27%),
+            var(--article-bg);
+        font-family: "DM Sans", sans-serif;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; }
+
+    .article-topbar {
+        min-height: 37px;
+        padding: 0 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        border-bottom: 1px solid var(--article-border);
+        color: var(--article-muted);
+        font-size: 10px;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+    }
+
+    .article-topbar-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .article-live-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #ff668f;
+        box-shadow: 0 0 12px rgba(255,102,143,.7);
+    }
+
+    .article-header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        min-height: 82px;
+        padding: 0 max(24px, calc((100% - 1240px) / 2));
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        border-bottom: 1px solid var(--article-border);
+        background: rgba(9,11,18,.84);
+        backdrop-filter: blur(22px);
+        -webkit-backdrop-filter: blur(22px);
+    }
+
+    .article-header .brand,
+    .article-footer .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 11px;
+        text-decoration: none;
+    }
+
+    .article-header .brand-mark,
+    .article-footer .brand-mark {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        border-radius: 13px;
+        color: white;
+        background: linear-gradient(135deg, #687fff, #a276ff);
+        box-shadow: 0 8px 24px rgba(112,111,255,.22);
+        font-family: Manrope, sans-serif;
+        font-size: 23px;
+        font-weight: 800;
+        transition: transform .25s;
+    }
+
+    .article-header .brand:hover .brand-mark,
+    .article-footer .brand:hover .brand-mark {
+        transform: rotate(-5deg) scale(1.05);
+    }
+
+    .article-brand-name {
+        display: block;
+        font-family: Manrope, sans-serif;
+        font-size: 23px;
+        font-weight: 800;
+        letter-spacing: -1px;
+        line-height: 1.15;
+    }
+
+    .brand-accent { color: var(--article-blue); }
+
+    .article-header .brand small,
+    .article-footer .brand small {
+        display: block;
+        margin-top: 4px;
+        color: var(--article-muted);
+        font-size: 8px;
+        letter-spacing: 1.8px;
+    }
+
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .back-home {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 15px;
+        border: 1px solid var(--article-border);
+        border-radius: 11px;
+        color: #c9cee0;
+        background: rgba(255,255,255,.035);
+        font-size: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: .2s;
+    }
+
+    .back-home:hover {
+        border-color: rgba(130,144,255,.45);
+        color: white;
+        background: rgba(130,144,255,.1);
+        transform: translateY(-1px);
+    }
+
+    .theme-toggle {
+        width: 41px;
+        height: 41px;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--article-border);
+        border-radius: 12px;
+        color: var(--article-text);
+        background: rgba(255,255,255,.035);
+        cursor: pointer;
+        transition: .2s;
+    }
+
+    .theme-toggle:hover {
+        border-color: rgba(130,144,255,.5);
+        background: rgba(130,144,255,.12);
+    }
+
+    .article-page {
+        width: min(100% - 40px, 900px);
+        min-height: 65vh;
+        margin: 0 auto;
+        padding: 65px 0 90px;
+        animation: articleEnter .55s ease both;
+    }
+
+    .article-page > .status-message {
+        padding: 70px 20px;
+        color: var(--article-muted);
+        text-align: center;
+    }
+
+    /* Styling for common article markup generated by article.js */
+    .article-page .article-category,
+    .article-page .article-tag,
+    .article-page .category-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 11px;
+        border: 1px solid rgba(130,144,255,.25);
+        border-radius: 7px;
+        color: #b9c2ff;
+        background: rgba(130,144,255,.09);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+    }
+
+    .article-page h1 {
+        max-width: 900px;
+        margin: 22px 0;
+        color: var(--article-text);
+        font-family: Manrope, sans-serif;
+        font-size: clamp(34px, 5.6vw, 60px);
+        font-weight: 800;
+        letter-spacing: -2.7px;
+        line-height: 1.12;
+        text-wrap: pretty;
+    }
+
+    .article-page .article-description,
+    .article-page .article-summary,
+    .article-page .article-subtitle {
+        max-width: 780px;
+        margin: 0 0 25px;
+        color: #aeb5c9;
+        font-size: clamp(15px, 2vw, 19px);
+        line-height: 1.85;
+    }
+
+    .article-page .article-meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px 18px;
+        margin: 25px 0;
+        color: var(--article-muted);
+        font-size: 11px;
+    }
+
+    .article-page .article-meta strong { color: #e0e4f2; }
+
+    .article-page .article-image,
+    .article-page .article-hero-image,
+    .article-page > img {
+        display: block;
+        width: 100%;
+        max-height: 540px;
+        margin: 30px 0;
+        border: 1px solid var(--article-border);
+        border-radius: 19px;
+        background: var(--article-panel);
+        object-fit: cover;
+        box-shadow: 0 22px 65px rgba(0,0,0,.22);
+    }
+
+    .article-page .article-content,
+    .article-page .article-body {
+        color: #c7ccda;
+        font-size: 16px;
+        line-height: 2;
+    }
+
+    .article-page .article-content h2,
+    .article-page .article-body h2 {
+        margin-top: 35px;
+        color: var(--article-text);
+        font-family: Manrope, sans-serif;
+        font-size: 25px;
+        letter-spacing: -.8px;
+    }
+
+    .article-page a {
+        color: #a9b5ff;
+        text-decoration-color: rgba(169,181,255,.45);
+        text-underline-offset: 3px;
+    }
+
+    .article-page a:hover { color: #d1b8ff; }
+
+    .article-page .read-original,
+    .article-page .original-link,
+    .article-page a.article-source-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 22px;
+        padding: 14px 19px;
+        border: 1px solid rgba(130,144,255,.32);
+        border-radius: 11px;
+        color: white;
+        background: linear-gradient(120deg, #687fff, #8e73e8);
+        font-size: 12px;
+        font-weight: 700;
+        text-decoration: none;
+        box-shadow: 0 9px 25px rgba(104,127,255,.15);
+        transition: transform .2s, box-shadow .2s;
+    }
+
+    .article-page .read-original:hover,
+    .article-page .original-link:hover,
+    .article-page a.article-source-link:hover {
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 13px 30px rgba(104,127,255,.26);
+    }
+
+    .article-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 26px max(24px, calc((100% - 1240px) / 2));
+        border-top: 1px solid var(--article-border);
+        background: rgba(0,0,0,.12);
+    }
+
+    .article-footer .brand-mark {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        font-size: 18px;
+    }
+
+    .article-footer .article-brand-name { font-size: 17px; }
+
+    .article-footer p,
+    .article-footer > span {
+        margin: 0;
+        color: var(--article-muted);
+        font-size: 10px;
+        line-height: 1.8;
+    }
+
+    @keyframes articleEnter {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            animation-duration: .01ms !important;
+            transition-duration: .01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .article-topbar { padding: 0 15px; font-size: 8px; letter-spacing: .8px; }
+        .article-topbar-left { gap: 7px; }
+        .article-header { min-height: 70px; padding-inline: 15px; gap: 10px; }
+        .article-header .brand-mark { width: 36px; height: 36px; border-radius: 11px; font-size: 20px; }
+        .article-brand-name { font-size: 20px; }
+        .article-header .brand small { font-size: 7px; letter-spacing: 1.3px; }
+        .header-actions { gap: 7px; }
+        .back-home { padding: 10px; font-size: 0; }
+        .back-home::first-letter { font-size: 16px; }
+        .theme-toggle { width: 38px; height: 38px; }
+        .article-page { width: calc(100% - 30px); padding: 40px 0 60px; }
+        .article-page h1 { margin: 18px 0; font-size: clamp(32px, 9vw, 45px); letter-spacing: -1.7px; }
+        .article-page .article-description,
+        .article-page .article-summary,
+        .article-page .article-subtitle { font-size: 15px; }
+        .article-page .article-image,
+        .article-page .article-hero-image,
+        .article-page > img { border-radius: 13px; }
+        .article-page .article-content,
+        .article-page .article-body { font-size: 14px; line-height: 1.9; }
+        .article-footer { align-items: flex-start; flex-direction: column; padding: 23px 15px; }
+    }
+  </style>
 </head>
+
 <body>
-  <div class="topline"><span class="live-dot"></span><span>YOUR DAILY BRIEFING</span><span class="topline-divider">/</span><span>Independent perspective. Informed world.</span></div>
-  <header class="site-header article-header">
-    <a class="brand" href="/"><span class="brand-mark">N</span><span>news<span class="brand-accent">wave</span><small>THE WORLD, IN FOCUS</small></span></a>
-    <div class="header-actions"><a class="back-home" href="/">← Back to headlines</a><button class="theme-toggle" id="themeToggle" aria-label="Switch theme"><span id="themeIcon">☾</span></button></div>
-  </header>
-  <main class="article-page" id="articlePage"><p class="status-message">Opening this story…</p></main>
-  <footer class="site-footer"><a class="brand footer-brand" href="/"><span class="brand-mark">N</span><span>news<span class="brand-accent">wave</span><small>THE WORLD, IN FOCUS</small></span></a><p>Read the full report from the original publisher.</p><span>© <span id="year"></span> NewsWave</span></footer>
-  <script src="/js/article.js"></script><script src="/js/theme.js"></script>
+<div class="article-topbar">
+  <div class="article-topbar-left">
+    <span class="article-live-dot"></span>
+    <span>YOUR DAILY BRIEFING</span>
+    <span aria-hidden="true">/</span>
+    <span>Independent perspective. Informed world.</span>
+  </div>
+  <span id="articleToday"></span>
+</div>
+
+<header class="site-header article-header">
+  <a class="brand" href="/" aria-label="NewsWave home">
+    <span class="brand-mark">N</span>
+    <span>
+                <span class="article-brand-name">news<span class="brand-accent">wave</span></span>
+                <small>THE WORLD, IN FOCUS</small>
+            </span>
+  </a>
+
+  <div class="header-actions">
+    <a class="back-home" href="/" aria-label="Back to headlines">← Back to headlines</a>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch theme" title="Switch theme">
+      <span id="themeIcon" aria-hidden="true">☾</span>
+    </button>
+  </div>
+</header>
+
+<main class="article-page" id="articlePage" aria-live="polite">
+  <p class="status-message">Opening this story…</p>
+</main>
+
+<footer class="site-footer article-footer">
+  <a class="brand footer-brand" href="/" aria-label="NewsWave home">
+    <span class="brand-mark">N</span>
+    <span>
+                <span class="article-brand-name">news<span class="brand-accent">wave</span></span>
+                <small>THE WORLD, IN FOCUS</small>
+            </span>
+  </a>
+
+  <p>Read the full report from the original publisher.</p>
+  <span>© <span id="year">2026</span> NewsWave</span>
+</footer>
+
+<script>
+  const articleNow = new Date();
+  const articleToday = document.getElementById("articleToday");
+  const articleYear = document.getElementById("year");
+
+  if (articleToday) {
+      articleToday.textContent = new Intl.DateTimeFormat("en-IN", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric"
+      }).format(articleNow).toUpperCase();
+  }
+
+  if (articleYear) articleYear.textContent = articleNow.getFullYear();
+</script>
+<script src="/js/article.js"></script>
+<script src="/js/theme.js"></script>
 </body>
 </html>

@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.util.UriComponentsBuilder;
-
+import org.springframework.data.domain.PageRequest;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.time.Instant;
 import java.util.List;
 import java.util.Locale;
@@ -17,6 +19,28 @@ public class NewsService {
     private final NewsArticleRepository repository;
     private final String apiKey;
     private final String country;
+
+
+    public List<NewsArticle> archive(
+            LocalDate from,
+            LocalDate to,
+            int page) {
+
+        Instant start = from.atStartOfDay(ZoneOffset.UTC).toInstant();
+
+        // Exclusive end includes all times on the selected "to" date.
+        Instant end = to.plusDays(1)
+                .atStartOfDay(ZoneOffset.UTC)
+                .toInstant();
+
+        return repository
+                .findByPublishedAtGreaterThanEqualAndPublishedAtLessThanOrderByPublishedAtDesc(
+                        start,
+                        end,
+                        PageRequest.of(page - 1, 20)
+                );
+    }
+
 
     public NewsService(RestClient.Builder builder,
                        NewsArticleRepository repository,
